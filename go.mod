@@ -1,3 +1,3 @@
-module github.com/dominikmueller/event-test
+module github.com/karolpawlak/go-sleeper
 
 go 1.19
