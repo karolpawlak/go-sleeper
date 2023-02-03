@@ -1,0 +1,8 @@
+---
+applications:
+- name: event-test
+  instances: 1
+  buildpacks:
+  - go_buildpack
+  health-check-type: http
+  health-check-http-endpoint: /
