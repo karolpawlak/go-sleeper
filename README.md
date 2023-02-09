@@ -10,3 +10,6 @@ Reproduction Steps
 3. The app failed bosh health check with line: \[HEALTH/0] ERR Failed to make HTTP request to '/' on port 8080: timed out after 1.00 seconds. The app container can be seen to be stopped, destroyed, created and started anew. The Apps Manager UI and CF CLI both report two events "App process crashed" and "App crashed".
 4. Wait another 10 minutes.
 5. Once again in the app logs we can see that the app failed bosh health check and the app container can be seen to be stopped, destroyed, created and started anew. This time there is no new events being recorded.
+
+Root Cause
+The root case is that Diego BBS will [only send a crash event if the crash count is increasing](https://github.com/cloudfoundry/bbs/blob/master/events/calculator/actual_lrp_event_calculator.go#L159). The crash count is not increasing in this specific case because the app crashes every 10 minutes. And the crash count [is being reset after 5 minutes](https://github.com/cloudfoundry/bbs/blob/2cfb94fdf7cae0bbc4a0608b9f939c323d3f195c/db/sqldb/actual_lrp_db.go#L401). We can look into improving this report of the crashed event. Please let us know if this is blocking you or causing any issues.
